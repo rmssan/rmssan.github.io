@@ -72,4 +72,118 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); revealObserver.unobserve(entry.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+
+  /* ==========================================================================
+     GA4 Custom Event Tracking (section_view & cta_click)
+     ========================================================================== */
+  if (!window.__gaTrackingInitialized) {
+    window.__gaTrackingInitialized = true;
+
+    // Safe GA4 event dispatch helper
+    const sendGAEvent = (eventName, params) => {
+      if (typeof window.gtag === 'function') {
+        try {
+          window.gtag('event', eventName, params);
+        } catch (err) {
+          console.warn(`[GA4] Event dispatch failed (${eventName}):`, err);
+        }
+      }
+    };
+
+    // 1. Section View Tracking (IntersectionObserver with 50% visibility)
+    const initSectionViewTracking = () => {
+      const sectionTargets = [
+        { selector: '#hero-title', name: 'hero' },
+        { selector: '#detail-space-title', name: 'detail' },
+        { selector: '#purchase-title', name: 'cta' }
+      ];
+
+      const sentSections = new Set();
+      const siteHeader = document.querySelector('#site-header');
+      const headerHeight = siteHeader ? Math.ceil(siteHeader.getBoundingClientRect().height) : 60;
+      const rootMargin = `-${headerHeight}px 0px 0px 0px`;
+
+      // Helper to check 50% visibility when document is visible
+      const isElementInView = (el) => {
+        if (!el) return false;
+        const rect = el.getBoundingClientRect();
+        const effectiveTop = headerHeight;
+        const effectiveBottom = window.innerHeight || document.documentElement.clientHeight;
+        const visibleTop = Math.max(rect.top, effectiveTop);
+        const visibleBottom = Math.min(rect.bottom, effectiveBottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        return rect.height > 0 && (visibleHeight / rect.height) >= 0.5;
+      };
+
+      const handleIntersect = (entries, observer) => {
+        if (document.visibilityState !== 'visible') return;
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            const sectionName = entry.target.dataset.gaSectionName;
+            if (sectionName && !sentSections.has(sectionName)) {
+              sentSections.add(sectionName);
+              sendGAEvent('section_view', { section_name: sectionName });
+              observer.unobserve(entry.target);
+            }
+          }
+        });
+      };
+
+      const sectionObserver = new IntersectionObserver(handleIntersect, {
+        threshold: 0.5,
+        rootMargin: rootMargin
+      });
+
+      const observedElements = [];
+
+      sectionTargets.forEach(({ selector, name }) => {
+        const el = document.querySelector(selector);
+        if (el) {
+          el.dataset.gaSectionName = name;
+          sectionObserver.observe(el);
+          observedElements.push({ el, name });
+        }
+      });
+
+      // Handle returning from another tab / background
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          observedElements.forEach(({ el, name }) => {
+            if (!sentSections.has(name) && isElementInView(el)) {
+              sentSections.add(name);
+              sendGAEvent('section_view', { section_name: name });
+              sectionObserver.unobserve(el);
+            }
+          });
+        }
+      });
+    };
+
+    // 2. CTA Click Tracking
+    const initCtaClickTracking = () => {
+      const ctaConfigs = [
+        { selector: '#cta-hero, [data-cta-location="hero"]', location: 'hero' },
+        { selector: '#cta-final, [data-cta-location="final"]', location: 'final' }
+      ];
+
+      const processedButtons = new Set();
+
+      ctaConfigs.forEach(({ selector, location }) => {
+        const buttons = document.querySelectorAll(selector);
+        buttons.forEach((btn) => {
+          if (!processedButtons.has(btn)) {
+            processedButtons.add(btn);
+            btn.addEventListener('click', () => {
+              sendGAEvent('cta_click', { button_location: location });
+            });
+          }
+        });
+      });
+    };
+
+    initSectionViewTracking();
+    initCtaClickTracking();
+  }
 });
+
