@@ -79,6 +79,25 @@ body {
     radial-gradient(ellipse at 82% 92%, rgba(210, 192, 195, 0.28) 0%, transparent 55%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* 배경 코끼리 워터마크 - 본문 읽기 방해되지 않도록 낮은 불투명도 고정 배치 */
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  right: -60px;
+  bottom: -40px;
+  width: 480px;
+  height: 480px;
+  background-image: url("assets/elephant-bg.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  opacity: 0.07;
+  pointer-events: none;
+  filter: sepia(0.3) saturate(0.6);
 }
 
 p,
@@ -256,8 +275,19 @@ h4 {
 
 .brand {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-emoji {
+  font-size: 22px;
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.brand:hover .brand-emoji {
+  transform: scale(1.15) rotate(-5deg);
 }
 
 .brand-name {
