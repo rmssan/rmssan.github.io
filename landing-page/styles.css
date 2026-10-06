@@ -82,22 +82,22 @@ body {
   position: relative;
 }
 
-/* 배경 코끼리 워터마크 - 본문 읽기 방해되지 않도록 낮은 불투명도 고정 배치 */
+/* 배경 코끼리 워터마크 - mix-blend-mode:multiply로 흰 배경 제거, 코끼리만 표시 */
 body::after {
   content: "";
   position: fixed;
   z-index: 0;
-  right: -60px;
-  bottom: -40px;
-  width: 480px;
-  height: 480px;
-  background-image: url("assets/elephant-bg.jpg");
+  right: -5%;
+  bottom: -5%;
+  width: 75vh;
+  height: 75vh;
+  background-image: url("assets/elephant-nobg.jpg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom right;
   opacity: 0.17;
   pointer-events: none;
-  filter: sepia(0.3) saturate(0.6);
+  mix-blend-mode: multiply;
 }
 
 p,
