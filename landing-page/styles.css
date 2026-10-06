@@ -33,16 +33,17 @@
   --sage-tint: rgba(120, 142, 134, 0.12);
 
   /* Functional Layout */
-  --page-max: 920px;
+  --page-max: 1240px;
   --border-line: #dfd6cb;
   --border-subtle: #eae1d7;
 
   --shadow-sm: 0 2px 8px rgba(62, 31, 32, 0.05);
   --shadow-md: 0 8px 24px rgba(62, 31, 32, 0.08);
   --shadow-lg: 0 16px 36px rgba(62, 31, 32, 0.12);
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
 }
 
 /* Base & Reset */
@@ -80,7 +81,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-p, span, li, a, h1, h2, h3, h4, figcaption, blockquote, summary, button {
+p,
+span,
+li,
+a,
+h1,
+h2,
+h3,
+h4,
+figcaption,
+blockquote,
+summary,
+button {
   word-break: keep-all;
   overflow-wrap: break-word;
   box-sizing: border-box;
@@ -126,7 +138,10 @@ figure {
 }
 
 /* Headings & Subheadings: 볼드체 수정 및 안전한 폰트 스케일링 */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: var(--brownie-dark);
   font-weight: 800;
   letter-spacing: -0.035em;
@@ -163,19 +178,19 @@ h1, h2, h3, h4 {
 }
 
 /* ==========================================================================
-   Layout Shell - 가장 바깥 아웃라인 밖으로 절대 삐져나가지 않도록 보호
+   Layout Shell - 시원한 풀위드 가로형 레이아웃 및 넉넉한 와이드 컨테이너
    ========================================================================== */
 .section-shell {
-  width: min(var(--page-max), calc(100% - 32px));
-  max-width: var(--page-max);
-  margin: 0 auto;
-  padding: 56px 36px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 80px max(24px, calc((100% - var(--page-max)) / 2));
   background-color: var(--creme-paper);
-  border-left: 1px solid var(--border-line);
-  border-right: 1px solid var(--border-line);
+  border-left: none;
+  border-right: none;
   box-sizing: border-box;
-  overflow: hidden; /* 아웃라인 밖으로 절대 내부 요소 튀어나오지 않음 */
-  box-shadow: 0 4px 30px rgba(62, 31, 32, 0.04);
+  overflow: hidden;
+  box-shadow: none;
 }
 
 /* 그리드 및 플렉스 컨테이너 내부 자식 요소 오버플로우 방지 규칙 */
@@ -197,21 +212,21 @@ h1, h2, h3, h4 {
   max-width: 100%;
 }
 
-.hero > *,
-.pain-grid > *,
-.before-figure > *,
-.structure-layout > *,
-.proof-section > *,
-.spec-grid > *,
-.proof-images > *,
-.faq-section > *,
-.bottom-cta > * {
+.hero>*,
+.pain-grid>*,
+.before-figure>*,
+.structure-layout>*,
+.proof-section>*,
+.spec-grid>*,
+.proof-images>*,
+.faq-section>*,
+.bottom-cta>* {
   min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
 }
 
-/* Header */
+/* Header - 상단 전체 가로폭 확장 (레퍼런스 이미지 스타일) */
 .site-header {
   position: sticky;
   z-index: 50;
@@ -219,48 +234,53 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(var(--page-max), calc(100% - 32px));
-  max-width: var(--page-max);
-  height: 60px;
-  margin: 20px auto 0;
-  padding: 0 24px;
+  width: 100%;
+  max-width: 100%;
+  height: 68px;
+  margin: 0;
+  padding: 0 max(28px, calc((100% - var(--page-max)) / 2));
   box-sizing: border-box;
-  background: rgba(251, 249, 245, 0.95);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-line);
-  border-bottom: 2px solid var(--cobblestone-light);
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.25s ease, background 0.25s ease;
+  background: rgba(251, 249, 245, 0.94);
+  backdrop-filter: blur(14px);
+  border: none;
+  border-bottom: 1px solid var(--border-line);
+  border-radius: 0;
+  box-shadow: 0 1px 4px rgba(62, 31, 32, 0.04);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.site-header.is-scrolled {
+  background: rgba(251, 249, 245, 0.98);
+  box-shadow: 0 4px 20px rgba(62, 31, 32, 0.06);
 }
 
 .brand {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 10px;
 }
 
 .brand-name {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--ruby);
   letter-spacing: -0.03em;
 }
 
 .brand-tag {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--cobblestone-dark);
   letter-spacing: 0.06em;
 }
 
 .header-action {
-  padding: 7px 14px;
+  padding: 9px 18px;
   background: var(--ruby-tint);
   border: 1px solid var(--ruby-border);
-  border-radius: 20px;
+  border-radius: 24px;
   color: var(--ruby);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -273,51 +293,51 @@ h1, h2, h3, h4 {
 }
 
 /* ==========================================================================
-   1. HERO SECTION
+   1. HERO SECTION - 가로형 2열 와이드 배치 (레퍼런스 이미지 구도)
    ========================================================================== */
 .hero {
   position: relative;
   display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  gap: 32px;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
   align-items: center;
-  padding-top: 48px;
-  padding-bottom: 56px;
-  background: linear-gradient(180deg, var(--creme-paper) 0%, #f7f2ea 100%);
+  padding-top: 72px;
+  padding-bottom: 72px;
+  background: linear-gradient(180deg, var(--creme-paper) 0%, #f6f0e6 100%);
   border-top: none;
 }
 
 .hero h1 {
-  font-size: clamp(24px, 3.2vw, 36px);
+  font-size: clamp(28px, 3.4vw, 44px);
   line-height: 1.25;
   color: var(--ruby);
   letter-spacing: -0.04em;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .hero-description {
-  margin: 16px 0 20px;
+  margin: 18px 0 24px;
   color: var(--brownie-text);
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.75;
 }
 
 .feature-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 24px;
+  gap: 8px;
+  margin-bottom: 28px;
 }
 
 .feature-tags span {
   display: inline-flex;
   align-items: center;
-  padding: 5px 10px;
+  padding: 6px 12px;
   background: rgba(170, 159, 149, 0.16);
   border: 1px solid rgba(170, 159, 149, 0.45);
-  border-radius: 16px;
+  border-radius: 18px;
   color: var(--brownie-dark);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -332,7 +352,7 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
+  gap: 8px;
   max-width: 100%;
 }
 
@@ -341,15 +361,15 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  min-height: 46px;
-  padding: 0 24px;
+  min-height: 52px;
+  padding: 0 32px;
   background: linear-gradient(135deg, var(--ruby) 0%, var(--ruby-rich) 100%);
   color: var(--creme-paper);
   border: 1px solid var(--ruby);
-  border-radius: var(--radius-sm);
-  font-size: 14px;
+  border-radius: var(--radius-pill);
+  font-size: 15px;
   font-weight: 800;
-  box-shadow: 0 4px 14px rgba(62, 31, 32, 0.2);
+  box-shadow: 0 6px 18px rgba(62, 31, 32, 0.22);
   transition: all 0.25s ease;
   max-width: 100%;
 }
@@ -357,7 +377,7 @@ h1, h2, h3, h4 {
 .cta-button:hover {
   background: linear-gradient(135deg, var(--ruby-rich) 0%, #63262a 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(62, 31, 32, 0.28);
+  box-shadow: 0 10px 24px rgba(62, 31, 32, 0.3);
   color: #fff;
 }
 
@@ -376,16 +396,16 @@ h1, h2, h3, h4 {
 
 .hero-visual {
   position: relative;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--creme-card);
   border: 1px solid var(--border-line);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .hero-visual img {
   width: 100%;
-  height: 440px;
+  height: 480px;
   object-fit: cover;
 }
 
@@ -396,29 +416,29 @@ h1, h2, h3, h4 {
 
 .hero-visual figcaption {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
-  left: 12px;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 12px;
+  gap: 10px;
+  padding: 11px 16px;
   background: rgba(251, 249, 245, 0.94);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   border: 1px solid var(--border-line);
   border-radius: var(--radius-sm);
   color: var(--brownie-dark);
-  font-size: 11.5px;
+  font-size: 12.5px;
   box-shadow: var(--shadow-sm);
 }
 
 .fig-badge {
   display: inline-block;
-  padding: 2px 6px;
+  padding: 3px 8px;
   background: var(--ruby);
   color: var(--creme-paper);
-  border-radius: 4px;
-  font-size: 10px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -592,9 +612,9 @@ h1, h2, h3, h4 {
 
 .structure-layout {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 28px;
-  margin-top: 32px;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  margin-top: 36px;
   align-items: start;
 }
 
@@ -721,7 +741,7 @@ h1, h2, h3, h4 {
 .proof-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  gap: 48px;
   align-items: start;
   background-color: var(--creme-paper);
   border-top: 1px solid var(--border-line);
@@ -783,7 +803,7 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 22px 18px;
+  padding: 24px 20px;
   background: var(--creme-card);
   transition: background 0.2s ease;
 }
@@ -798,7 +818,7 @@ h1, h2, h3, h4 {
 
 .spec-item strong {
   display: block;
-  font-size: clamp(26px, 3.2vw, 40px);
+  font-size: clamp(28px, 3.4vw, 42px);
   font-weight: 900;
   color: var(--ruby);
   line-height: 1;
@@ -806,7 +826,7 @@ h1, h2, h3, h4 {
 }
 
 .spec-item strong span {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--ruby-accent);
   margin-left: 3px;
@@ -815,14 +835,14 @@ h1, h2, h3, h4 {
 
 .spec-label {
   margin: 10px 0 4px;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 800;
   color: var(--brownie-dark);
 }
 
 .spec-detail {
   display: block;
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--brownie-muted);
   line-height: 1.45;
 }
@@ -836,7 +856,7 @@ h1, h2, h3, h4 {
   border: 1px solid var(--border-line);
   border-radius: var(--radius-md);
   overflow: hidden;
-  margin-top: 24px;
+  margin-top: 28px;
   box-shadow: var(--shadow-sm);
 }
 
@@ -849,7 +869,7 @@ h1, h2, h3, h4 {
 
 .detail-strip img {
   width: 100%;
-  height: 260px;
+  height: 320px;
   object-fit: cover;
 }
 
@@ -867,8 +887,8 @@ h1, h2, h3, h4 {
    ========================================================================== */
 .faq-section {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 32px;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 48px;
   background-color: var(--creme-card);
   border-top: 1px solid var(--border-line);
 }
@@ -876,7 +896,7 @@ h1, h2, h3, h4 {
 .faq-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .faq-item {
@@ -897,10 +917,10 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 16px 20px;
+  padding: 18px 22px;
   cursor: pointer;
   list-style: none;
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--brownie-dark);
 }
 
@@ -917,8 +937,8 @@ h1, h2, h3, h4 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
   background: rgba(62, 31, 32, 0.08);
   border-radius: 50%;
@@ -937,12 +957,12 @@ h1, h2, h3, h4 {
 
 .faq-item p {
   margin: 0;
-  padding: 0 20px 18px 20px;
+  padding: 0 22px 20px 22px;
   color: var(--brownie-text);
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.7;
   border-top: 1px solid var(--border-subtle);
-  padding-top: 14px;
+  padding-top: 16px;
 }
 
 /* ==========================================================================
@@ -950,8 +970,8 @@ h1, h2, h3, h4 {
    ========================================================================== */
 .bottom-cta {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 32px;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 56px;
   align-items: center;
   background: linear-gradient(135deg, var(--creme-section) 0%, #e6dcce 100%);
   border-top: 1px solid var(--border-line);
@@ -960,10 +980,10 @@ h1, h2, h3, h4 {
 
 .bottom-product {
   position: relative;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border-line);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .bottom-product img {
@@ -1015,8 +1035,9 @@ h1, h2, h3, h4 {
 
 .cta-button-large {
   width: 100%;
-  min-height: 48px;
-  font-size: 14.5px;
+  min-height: 54px;
+  font-size: 15px;
+  border-radius: var(--radius-pill);
 }
 
 .pressure-note {
@@ -1029,17 +1050,17 @@ h1, h2, h3, h4 {
    7. FOOTER & STICKY BAR
    ========================================================================== */
 .site-footer {
-  width: min(var(--page-max), calc(100% - 32px));
-  max-width: var(--page-max);
-  margin: 0 auto 32px;
-  padding: 32px 36px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 44px max(24px, calc((100% - var(--page-max)) / 2));
   box-sizing: border-box;
   background: #ded4c7;
-  border: 1px solid var(--border-line);
-  border-top: none;
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  border: none;
+  border-top: 1px solid var(--border-line);
+  border-radius: 0;
   color: var(--brownie-muted);
-  font-size: 11.5px;
+  font-size: 12px;
   overflow: hidden;
 }
 
@@ -1291,7 +1312,9 @@ h1, h2, h3, h4 {
     scroll-behavior: auto;
   }
 
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
